@@ -148,7 +148,7 @@
         })
         return Number(i)
       },
-      // 计算总数量
+      // 计算总数量--
       totalNum () {
         var totalNum = 0
         this.cartList && this.cartList.forEach(item => {
