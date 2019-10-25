@@ -66,7 +66,10 @@ public class SearchController {
     @GetMapping("/search/{key}")
     public ResponseData search(@PathVariable("key")String key){
         SearchRequest searchRequest=new SearchRequest();
+        searchRequest.setCurrentPage(0);
+        searchRequest.setPageSize(10);
         searchRequest.setKeyword(key);
+        searchRequest.setSort("price");
         SearchResponse searchResponse=productSearchService.fuzzySearch(searchRequest);
         if (searchResponse.getCode().equals(ShoppingRetCode.SUCCESS.getCode())) {
             return new ResponseUtil().setData(searchResponse.getData());

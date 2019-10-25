@@ -76,9 +76,11 @@ public class ProductSearchServiceImpl implements ProductSearchService {
             } else if ("-1".equals(request.getSort())) {
                 sort = new Sort(Sort.Direction.DESC, "price");
             }
-            Pageable pageable = new PageRequest(request.getCurrentPage() - 1, request.getPageSize());
+            Pageable pageable = null;
             if (sort != null) {
-                pageable = new PageRequest(request.getCurrentPage() - 1, pageable.getPageSize(), sort);
+                pageable = PageRequest.of(request.getCurrentPage() - 1, pageable.getPageSize(), sort);
+            }else{
+                pageable = PageRequest.of(request.getCurrentPage() - 1, request.getPageSize());
             }
             Iterable<ItemDocument> elasticRes =
                     productRepository.search(boolQueryBuilder, pageable);

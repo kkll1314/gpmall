@@ -17,6 +17,7 @@ vi /etc/hosts
 127.0.0.1 kafka.gpmall.com
 127.0.0.1 redis.gpmall.com
 127.0.0.1 mysql.gpmall.com
+127.0.0.1 es.gpmall.com
 ```
 
 其中 ,127.0.0.1 修改为对于应用的Ip地址即可
