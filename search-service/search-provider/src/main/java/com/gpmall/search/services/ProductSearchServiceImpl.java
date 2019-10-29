@@ -78,7 +78,7 @@ public class ProductSearchServiceImpl implements ProductSearchService {
             }
             Pageable pageable = null;
             if (sort != null) {
-                pageable = PageRequest.of(request.getCurrentPage() - 1, pageable.getPageSize(), sort);
+                pageable = PageRequest.of(request.getCurrentPage() - 1, request.getPageSize(), sort);
             }else{
                 pageable = PageRequest.of(request.getCurrentPage() - 1, request.getPageSize());
             }
