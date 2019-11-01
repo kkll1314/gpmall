@@ -47,9 +47,9 @@ public class ZkMutexDistributedLockFactory {
     private static synchronized void init() {
         if(client==null){
             //TODO zk地址
-            String IPAndPort = "";
+            String IPAndPort = "127.0.0.1:2181";
             //TODO 项目名
-            String projectName = "";
+            String projectName = "gpmall";
             if(StringUtils.isEmpty(IPAndPort) || StringUtils.isEmpty(projectName)){
                 logger.error("zk锁启动失败缺少配置--IP和端口号/项目名");
                 throw new RuntimeException("zk锁启动异常--缺少配置--IP和端口号/项目名");

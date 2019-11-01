@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.gpmall.commons.lock.annotation.CustomerLock;
 import com.gpmall.shopping.IProductService;
 import com.gpmall.shopping.constant.GlobalConstants;
 import com.gpmall.shopping.constants.ShoppingRetCode;
@@ -51,6 +52,8 @@ public class ProductServiceImpl implements IProductService {
     @Autowired
     ContentConverter contentConverter;
     @Override
+    @CustomerLock(lockKey = "#request.id",lockPrefix = "redis",lockSuffix = "lock",separator = "-",
+            tryLock = false,leaseTime = 20,lockType = "redis")
     public ProductDetailResponse getProductDetail(ProductDetailRequest request) {
         ProductDetailResponse response=new ProductDetailResponse();
         response.setCode(ShoppingRetCode.SUCCESS.getCode());

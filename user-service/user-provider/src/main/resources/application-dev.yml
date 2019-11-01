@@ -78,11 +78,11 @@ lock:
 email:
   mail-server-host: smtp.163.com
   mail-server-port: 25
-  from-address: xxxx@163.com
+  from-address: cbby666@163.com
   to-addresss:
   cc-addresss:
-  username:
-  password:
+  username: cbby666@163.com
+  password: xuan618128
   mailSmtpAuth: true
   subject: 激活邮件，请点击激活
   content:

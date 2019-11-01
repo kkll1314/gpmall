@@ -6,7 +6,7 @@ import org.springframework.context.annotation.ComponentScan;
 import tk.mybatis.spring.annotation.MapperScan;
 
 @MapperScan(basePackages = "com.gpmall.shopping.dal")
-@ComponentScan(basePackages = "com.gpmall.shopping")
+@ComponentScan(basePackages = {"com.gpmall.shopping","com.gpmall.commons.lock"})
 @SpringBootApplication
 public class ShoppingProviderApplication {
 
