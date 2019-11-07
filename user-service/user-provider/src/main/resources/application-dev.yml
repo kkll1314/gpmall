@@ -35,7 +35,7 @@ spring:
   kafka:
     bootstrapServers: kafka.gpmall.com:9092,kafka.gpmall.com:9092
     consumer:
-      auto-offset-reset: latest
+      auto-offset-reset: latest    #保证每个组一个消费者消费同一条消息,若设置为earliest，那么会从头开始读partition(none)
       key-serializer: org.apache.kafka.common.serialization.StringDeserializer
       value-serializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
@@ -78,11 +78,11 @@ lock:
 email:
   mail-server-host: smtp.163.com
   mail-server-port: 25
-  from-address: cbby666@163.com
+  from-address: kkll13141314@163.com
   to-addresss:
   cc-addresss:
-  username: cbby666@163.com
-  password: xuan618128
+  username: kkll13141314@163.com
+  password: chen618128   #使用授权码登录客户端
   mailSmtpAuth: true
   subject: 激活邮件，请点击激活
   content:
