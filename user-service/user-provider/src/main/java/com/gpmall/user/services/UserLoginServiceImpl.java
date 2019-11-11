@@ -56,8 +56,8 @@ public class UserLoginServiceImpl implements IUserLoginService {
             }
             //验证是否已经激活
             if("N".equals(member.get(0).getIsVerified())){
-                response.setCode(SysRetCodeConstants.USERORPASSWORD_ERRROR.getCode());
-                response.setMsg(SysRetCodeConstants.USERORPASSWORD_ERRROR.getMessage());
+                response.setCode(SysRetCodeConstants.USER_ISVERFIED_ERROR.getCode());
+                response.setMsg(SysRetCodeConstants.USER_ISVERFIED_ERROR.getMessage());
                 return response;
             }
             if(!DigestUtils.md5DigestAsHex(request.getPassword().getBytes()).equals(member.get(0).getPassword())){
