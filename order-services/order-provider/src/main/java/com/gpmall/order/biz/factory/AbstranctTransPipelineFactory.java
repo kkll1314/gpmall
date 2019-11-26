@@ -20,9 +20,9 @@ public abstract class AbstranctTransPipelineFactory <T extends AbstractRequest> 
 
     @Override
     public final TransOutboundInvoker build(T obj) {
-        //创建转换器
+        //创建转换器,这里调用了子类的方法创建的是CreateOrderConvert
         TransConvert convert = createConvert();
-        //创建上下文
+        //创建上下文，这里调用了子类的方法创建的是createOrderContext
         TransHandlerContext context = createContext();
         //上朔
         AbsTransHandlerContext absCtx = (AbsTransHandlerContext) context;

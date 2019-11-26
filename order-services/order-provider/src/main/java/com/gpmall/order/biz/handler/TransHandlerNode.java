@@ -23,6 +23,7 @@ public class TransHandlerNode {
         //回调函数
         execCallbacks(transHandler.getTransCallback(), context, null);
         if (next != null) {
+            //执行成功了才去执行下一个节点
             if (success) {
                 if (transHandler.isAsync()) {
                     //TODO 如果为true，则采用异步线程去执行任务
