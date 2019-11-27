@@ -89,7 +89,7 @@ public class KafKaConfig {
      * 批量监听的消费者工厂
      * @return
      */
-    @Bean
+   /* @Bean
     public KafKaRegisterSuccConsumerFactory kafKaRegisterSuccBatchConsumerFactory(){
         Map<String,Object>  consumerProperties = kafkaProperties.buildProducerProperties();
         consumerProperties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,kafkaProperties.getBootstrapServers());
@@ -101,16 +101,16 @@ public class KafKaConfig {
         consumerProperties.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG,false);
         // consumerProperties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,10);//在一个的轮训方法中，返回的最大记录数
         consumerProperties.put("spring.json.trusted.packages" ,"com.gpmall.user.dal.entitys,com.gpmall.user.dal.*");
-        /*
+        *//*
         earliest:当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，从头开始消费
         latest: 当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
         none: topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
-        */
+        *//*
         consumerProperties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG,"earliest");
         //设置每次接受Message 的数量为10
         consumerProperties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG,10);
         return new KafKaRegisterSuccConsumerFactory(consumerProperties);
-    }
+    }*/
 
     /**
      * 自定义消费者的监听工厂，这里产生一个以注册时的消费者的配置为准的消息监听器
@@ -125,7 +125,7 @@ public class KafKaConfig {
         return conFactory;
     }
 
-    @Bean
+  /*  @Bean
     public KafkaListenerContainerFactory userBatchRegisterSuccKafkaListenerContainerFactory(){
         ConcurrentKafkaListenerContainerFactory conFactory = new ConcurrentKafkaListenerContainerFactory<>();
         //注入支持批量的消费者工厂的配置
@@ -136,7 +136,7 @@ public class KafKaConfig {
         conFactory.getContainerProperties().setPollTimeout(30000);
         conFactory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL);//  设置消费者消费消息后的提交方式为手动提交
         return conFactory;
-    }
+    }*/
 
     /**
      * 并发消费
@@ -145,9 +145,9 @@ public class KafKaConfig {
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String,String>> concurrentKafkaListenerContainerFactory(){
         ConcurrentKafkaListenerContainerFactory<String,String> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(kafKaRegisterSuccBatchConsumerFactory());
+        factory.setConsumerFactory(kafKaRegisterSuccConsumerFactory());
         factory.setConcurrency(4);
-        factory.setBatchListener(true);
+       // factory.setBatchListener(true);
         factory.getContainerProperties().setPollTimeout(3000);
         return factory;
     }

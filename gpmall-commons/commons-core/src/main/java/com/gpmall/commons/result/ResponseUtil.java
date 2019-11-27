@@ -13,7 +13,7 @@ public class ResponseUtil<T> {
     public ResponseUtil() {
         responseData = new ResponseData<>();
         responseData.setSuccess(true);
-        responseData.setMessage("success");
+        responseData.setMessage("成功");
         responseData.setCode(200);
     }
 

@@ -83,7 +83,7 @@
           <el-input type="text" placeholder="详细地址" @change="_handleAddressChange" v-model="address"></el-input>
         </div>
         <div>
-          <el-checkbox class="auto-login" v-model="msg._Default">设为默认</el-checkbox>
+          <el-checkbox class="auto-login" :checked="msg._Default" v-model="msg._Default">设为默认</el-checkbox>
         </div>
         <y-button text='保存'
                   class="btn"
@@ -146,6 +146,11 @@
           message: m
         })
       },
+      messageSuccess (m) {
+        this.$message.success({
+          message: m
+        })
+      },
       _handleProvinceChange (provinceId) {
         if (!provinceId) {
           return
@@ -194,6 +199,12 @@
       },
       _addressUpdate (params) {
         addressUpdate(params).then(res => {
+          if (res.success === true) {
+            this.messageSuccess(res.message)
+          } else {
+            this.message(res.message)
+          }
+
           this._addressList()
         })
       },
@@ -217,6 +228,7 @@
       save (p) {
 //        alert(p._Default)
         this.popupOpen = false
+
         if (p.addressId) {
           this._addressUpdate(p)
         } else {
@@ -228,6 +240,7 @@
       del (addressId, i) {
         addressDel({addressId: addressId}).then(res => {
           if (res.success === true) {
+            this.message('删除成功')
             this.addList.splice(i, 1)
           } else {
             this.message('删除失败')
@@ -241,7 +254,7 @@
           this.msg.userName = item.userName
           this.msg.tel = item.tel
           this.msg.streetName = item.streetName
-          this.msg._Default = item._Default
+          this.msg._Default = item.isDefault
           this.msg.addressId = item.addressId
           // init 地址选择框
           this._initAddressSelect(item.streetName)

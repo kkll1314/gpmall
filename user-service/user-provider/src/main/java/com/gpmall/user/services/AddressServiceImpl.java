@@ -1,5 +1,6 @@
 package com.gpmall.user.services;
 
+import com.gpmall.commons.tool.exception.BizException;
 import com.gpmall.user.IAddressService;
 import com.gpmall.user.constants.SysRetCodeConstants;
 import com.gpmall.user.converter.AddressConverter;
@@ -72,7 +73,7 @@ public class AddressServiceImpl implements IAddressService {
         AddAddressResponse response=new AddAddressResponse();
         try{
             request.requestCheck();
-            checkAddressDefaultUnique(request.getIsDefault() != null && request.getIsDefault()==1,request.getUserId());
+            checkAddressDefaultUnique(request.getIsDefault() != null && request.getIsDefault()==1,request.getUserId(),null);
             Address address=converter.req2Address(request);
             int row=addressMapper.insert(address);
             response.setCode(SysRetCodeConstants.SUCCESS.getCode());
@@ -91,7 +92,7 @@ public class AddressServiceImpl implements IAddressService {
         UpdateAddressResponse response=new UpdateAddressResponse();
         try{
             request.requestCheck();
-            checkAddressDefaultUnique(request.getIsDefault()==1,request.getUserId());
+            checkAddressDefaultUnique(request.getIsDefault()==1,request.getUserId(),request.getAddressId());
             Address address=converter.req2Address(request);
             int row=addressMapper.updateByPrimaryKey(address);
             response.setMsg(SysRetCodeConstants.SUCCESS.getMessage());
@@ -127,16 +128,23 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     //地址只能有一个默认
-    private void checkAddressDefaultUnique(boolean isDefault,Long userId){
+    private void checkAddressDefaultUnique(boolean isDefault,Long userId,Long addressId)throws BizException{
         if(isDefault){
             Example example=new Example(Address.class);
             example.createCriteria().andEqualTo("userId",userId);
             List<Address> addresses=addressMapper.selectByExample(example);
             addresses.parallelStream().forEach(address->{
-                if(address.getIsDefault()==1){
-                    address.setIsDefault(1);
-                    addressMapper.updateByPrimaryKey(address);
+                //如果是编辑，判断是否存在默认地址的时候自身不参与判断
+                if(addressId!=null){
+                    if(address.getIsDefault()==1&&!addressId.equals(address.getAddressId())){
+                        throw new BizException(SysRetCodeConstants.SYSTEM_ERROR.getCode(),"已存在默认地址");
+                    }
+                }else{
+                    if(address.getIsDefault()==1){
+                        throw new BizException(SysRetCodeConstants.SYSTEM_ERROR.getCode(),"已存在默认地址");
+                    }
                 }
+
             });
         }
     }

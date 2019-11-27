@@ -104,7 +104,7 @@ public class AddressController {
         JSONObject object = JSON.parseObject(userInfo);
         Long uid = Long.parseLong(object.get("uid").toString());
         request.setAddressId(form.getAddressId());
-        request.setIsDefault(form.is_Default() ? 1 : null);
+        request.setIsDefault(form.is_Default() ? 1 : 0);
         request.setStreetName(form.getStreetName());
         request.setTel(form.getTel());
         request.setUserId(uid);
