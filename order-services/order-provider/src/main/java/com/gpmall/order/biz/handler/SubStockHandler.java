@@ -8,6 +8,7 @@ import com.gpmall.order.dal.entitys.Stock;
 import com.gpmall.order.dal.persistence.OrderItemMapper;
 import com.gpmall.order.dal.persistence.StockMapper;
 import com.gpmall.order.dto.CartProductDto;
+import com.gpmall.user.constants.SysRetCodeConstants;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,8 +43,8 @@ public class SubStockHandler extends AbstractTransHandler {
 	public boolean handle(TransHandlerContext context) {
 		CreateOrderContext createOrderContext = (CreateOrderContext) context;
 		List<CartProductDto> cartProductDtoList = createOrderContext.getCartProductDtoList();
-		//item_ids
-		List<Long> itemIds = createOrderContext.getBuyProductIds();
+		//获取商品id集合
+		List<Long> itemIds = cartProductDtoList.stream().map(CartProductDto::getProductId).collect(Collectors.toList());
 		//排序
 		itemIds.sort(Long::compareTo);
 		//一次性锁 ids
@@ -61,8 +62,16 @@ public class SubStockHandler extends AbstractTransHandler {
 					if (stock.getStockCount() < one.getProductNum()) {
 						throw new BaseBusinessException(stock.getItemId()+"库存不足");
 					}
-					stock.setLockCount(one.getProductNum().intValue());
-					stock.setStockCount(-one.getProductNum());
+					//判断是否超过限购数量
+                    if(stock.getRestrictCount()<one.getProductNum()){
+					    throw new BaseBusinessException(SysRetCodeConstants.SYSTEM_ERROR.getCode(),"超过限购数量");
+                    }
+                    //重新设置库存数量
+                    stock.setStockCount(stock.getStockCount()-one.getProductNum().intValue());
+					stock.setLockCount(one.getProductNum().intValue()+stock.getLockCount());
+                    stock.setRestrictCount(null);
+					/*stock.setLockCount(one.getProductNum().intValue());
+					stock.setStockCount(-one.getProductNum());*/
 					//更改库存状态
 					stockMapper.updateStock(stock);
 					return;
